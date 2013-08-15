@@ -15,6 +15,7 @@ Things I would like to do with this code:
 
 '''
 import os
+import sys
 import shutil
 import numpy as np
 import surfaceProcessing as sp
@@ -366,5 +367,31 @@ def convertFile():
 
 
 if __name__ == '__main__':
-    doSurfaceCorrelation()
-    pass
+    welcomeString = ('Hi, this is the wrapper for the surface processing'
+                     + ' scripts\nTo begin, you should manually edit the'
+                     + ' configure.py file, located in this directory.\n'
+                     + 'Once you have set up the configure.py file, start'
+                     + ' the wrapper by adding one of these arguments:\n'
+                     + '    \'gradient\' - creates the gradient files\n'
+                     + '    \'surface\' - do the surface computation\n'
+                     + '    \'glm\' - run the glm on the surface'
+                     + ' computation outputs\n'
+                     + 'Supply no argument to see this message.')
+    if len(sys.argv) == 0:
+        # Somebody just started the thing without supplying arguments
+        print(welcomeString)
+    elif len(sys.argv) > 1:
+        message = 'You supplied too many arguments, I can only handle one'
+        raise Exception(message)
+    else:
+        if sys.argv[1] == 'gradient':
+            makeGradient()
+        elif sys.argv[1] == 'surface':
+            doSurfaceCorrelation()
+        elif sys.argv[1] == 'glm':
+            makeGlm()
+        else:
+            message = ('I did not understand the argument of %s' % (sys.argv[1])
+                       + '\nI will print the helpfile now:\n\n')
+            print(message)
+            print(welcomeString)
