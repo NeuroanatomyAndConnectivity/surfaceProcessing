@@ -3,9 +3,7 @@ surfaceProcessing
 
 Package with scripts for running surface level comparison of morphometry
 
-###########
-Installation
-###########
+##Installation
 download a copy of the repository (or clone it). If the files are packed in a  
 zip file (i.e. if you haven't cloned the repo), unpack them using tar -xzfv.  
 Then, add the following line to the end of your .bashrc file  
@@ -22,9 +20,7 @@ your usage scenario and add put the absolute path to it in the configure.py
 file.
 
 
-##########
-Usage
-##########
+##Usage
 
 This is a list of the score options currently implemented for the surface processing  
 'pearsonr': pearson correlation between gradient and overlay  
