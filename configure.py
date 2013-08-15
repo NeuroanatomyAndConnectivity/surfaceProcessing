@@ -70,6 +70,9 @@ maskTemp = '/afs/cbs.mpg.de/software/freesurfer/5.1.0/amd64/2.15/subjects/fsaver
 # available, refer to the readme file for a list
 score = 'zspear'
 
+# Set this to true if you want to use the absolute values of the overlay
+useAsbVals = True
+
 # name template for the output of the surface computation
 correlationOutName = '%s_correlation_%d_%s'
 

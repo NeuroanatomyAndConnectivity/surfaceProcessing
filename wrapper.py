@@ -102,6 +102,7 @@ def doSurfaceCorrelation():
     outDir = cf.correlationOutDir
     outName = cf.correlationOutName
     subjectList = cf.subjectList
+    useAbsVals = cf.useAsbVals
 
     # Load subject list
     f = open(subjectList, 'rb')
@@ -170,6 +171,8 @@ def doSurfaceCorrelation():
             # Get the files loaded
             gradient = sp.fileops.loadScalar(gradientMghPath)
             overlay = sp.fileops.loadScalar(overlayPath)
+            if useAbsVals:
+                overlay = np.abs(overlay)
             keepVerteces = sp.fileops.loadVector(maskPath, drop=2)
 
             # Construct a graph to represent the surface
