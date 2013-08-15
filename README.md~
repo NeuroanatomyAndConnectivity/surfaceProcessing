@@ -21,19 +21,6 @@ file.
 
 
 ##Usage
-Start using the scripts by executing
-
-    python wrapper.py
-    
-and reading the help file. An example subject list is located at  
-/scr/kansas1/surchs/testSurface/subjects.txt and this path is also ideal for  
-testing.
-
-If you would like to generate your own subject list, the nifti files are  
-located here:
-
-    /scr/melisse1/NKI_enhanced/results/
-
 
 This is a list of the score options currently implemented for the surface processing  
 'pearsonr': pearson correlation between gradient and overlay  
