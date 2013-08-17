@@ -21,6 +21,11 @@ file.
 
 
 ##Usage
+Make sure that all dependencies are available when executing the script
+and when starting the condor process. Specifically, make sure that AFNI,  
+connectome workbench and freesurfer binaries are available in your
+current terminal environment (e.g. by typing AFNI, freesurfer).
+
 Start using the scripts by executing
 
     python wrapper.py
