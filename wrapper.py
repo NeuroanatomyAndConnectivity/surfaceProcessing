@@ -380,10 +380,10 @@ if __name__ == '__main__':
                      + '    \'glm\' - run the glm on the surface'
                      + ' computation outputs\n'
                      + 'Supply no argument to see this message.')
-    if len(sys.argv) == 0:
+    if len(sys.argv) == 1:
         # Somebody just started the thing without supplying arguments
         print(welcomeString)
-    elif len(sys.argv) > 1:
+    elif len(sys.argv) > 2:
         message = 'You supplied too many arguments, I can only handle one'
         raise Exception(message)
     else:
