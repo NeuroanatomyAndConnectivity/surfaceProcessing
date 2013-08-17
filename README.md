@@ -60,5 +60,3 @@ If you want to go for all packages individually then you should have access to:
 * scipy
 * nibabel
 * networkx
-
-* 
