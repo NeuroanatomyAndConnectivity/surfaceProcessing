@@ -38,7 +38,7 @@ def makeGradient():
     I will make this more flexible once it is running
     '''
     # Stuff that should be supplied dynamically
-    subjectList = cf.subjectList
+    subjectListFile = cf.subjectListFile
     outPutDir = cf.gradientOutPutDir
     pathToScript = cf.pathToGradientScript
     condorDir = cf.condorDir
@@ -54,7 +54,7 @@ def makeGradient():
         os.makedirs(logDir)
 
     # Load subject list
-    f = open(subjectList, 'rb')
+    f = open(subjectListFile, 'rb')
     subjectLines = f.readlines()
     f.close()
 
@@ -101,11 +101,11 @@ def doSurfaceCorrelation():
     tempDir = cf.tempDir
     outDir = cf.correlationOutDir
     outName = cf.correlationOutName
-    subjectList = cf.subjectList
+    subjectListFile = cf.subjectListFile
     useAbsVals = cf.useAsbVals
 
     # Load subject list
-    f = open(subjectList, 'rb')
+    f = open(subjectListFile, 'rb')
     subjectLines = f.readlines()
     f.close()
 
@@ -220,7 +220,7 @@ def makeGlm():
     searchFile = cf.correlationOutName
     condorFile = cf.glmCondorName
     condorDir = cf.condorDir
-    subjectList = cf.subjectList
+    subjectListFile = cf.subjectListFile
     vertexThresh = cf.vertexThresh
     clustThresh = cf.clustThresh
     posneg = cf.posneg
@@ -237,6 +237,16 @@ def makeGlm():
         os.makedirs(scriptDir)
     if not os.path.isdir(logDir):
         os.makedirs(logDir)
+
+    # Load subject list
+    f = open(subjectListFile, 'rb')
+    subjectLines = f.readlines()
+    f.close()
+
+    subjectList = []
+    for line in subjectLines:
+        subject = line.strip()
+        subjectList.append(subject)
 
     scriptList = []
 

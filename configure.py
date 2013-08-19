@@ -17,7 +17,7 @@ even a subset of the processing as there are some cross-dependencies
 # General Configuration
 #===============================================================================
 # full path to a textfile containing only subject names
-subjectList = '/scr/kansas1/surchs/testSurface/subjects.txt'
+subjectListFile = '/scr/kansas1/surchs/testSurface/subjects.txt'
 # a python list containing the hemispheres to run on (like so: ['lh', 'rh'])
 hemipsheres = ['lh', 'rh']
 # a python list containing the radii for the sliding window (like so: [3, 6])
