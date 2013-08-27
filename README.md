@@ -11,7 +11,14 @@ Then, add the following line to the end of your .bashrc file
     export PYTHONPATH=/Path/To/The/Downloaded/Files
     
 While replacing '/Path/To/The/Downloaded/Files' with the actual absolute  
-path that you downloaded the files to
+path to the directory where the package folder is stored. For example,
+if you unpacked your files in /home/brainmaster/packages/surfaceProcessing
+then you should use
+
+    export PYTHONPATH=/home/brainmaster/packages
+    
+This will allow python to find the package and load all it's functions as
+long as you start python under your user account.
 
 In addition to the files in this repository, please also download the files  
 in https://github.com/NeuroanatomyAndConnectivity/glyphsets  
