@@ -29,9 +29,24 @@ file.
 
 ##Usage
 Make sure that all dependencies are available when executing the script
-and when starting the condor process. Specifically, make sure that AFNI,  
-connectome workbench and freesurfer binaries are available in your
-current terminal environment (e.g. by typing AFNI, freesurfer).
+and when starting the condor process. 
+
+###Condor usage
+Before starting the condor process make sure that AFNI, connectome workbench  
+and freesurfer binaries are available in your current terminal
+environment (e.g. by typing AFNI, freesurfer).
+
+To submit your job order to condor, go to the condorDir and look for the
+appropriate .submit file that you would like to run. Then type
+
+    condor_submit nameOfCondorFile.submit
+
+to submit the process to condor. You can type
+
+    condor_q [-global]
+
+to check the processes (the -global flag is optional and will show an
+overview of all currently running processes on the condor server).
 
 Start using the scripts by executing
 
