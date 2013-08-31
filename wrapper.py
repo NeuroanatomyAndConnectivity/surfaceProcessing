@@ -18,8 +18,9 @@ import os
 import sys
 import shutil
 import numpy as np
-import surfaceProcessing as sp
 import configure as cf
+import surfaceProcessing as sp
+from nibabel import freesurfer as nfs
 
 
 def makeGradient():
@@ -85,6 +86,12 @@ def doSurfaceCorrelation():
 
     The input format of all files should be mgh.
     The mask should be an overlay of zeroes and ones.
+
+    Notes:
+        To run the whole thing on individual labels, we need to specify the
+        path to the label directory that contains the labels for the correct
+        hemisphere and template. Then, we can cut out the appropriate part and
+        store it in the file.
 
     Testing:
     - can I load the files that I have transformed with nibabel as morph files?
@@ -188,6 +195,18 @@ def doSurfaceCorrelation():
                 corrVec = sp.procops.slideRoiValues(numberVerteces, keepVerteces,
                                                     distanceDict, gradient,
                                                     morphVec2=overlay, score=score)
+
+                if doLabel:
+                    # Get the label vector and take the average of the
+                    # correlation map
+                    for label in labelList:
+                        # make label name
+                        labelName = os.path.basename(label)
+                        # read the label
+                        labVec = nfs.read_label(label)
+                        # use the indices to take a slice out of the overlay
+                        overlayVec = overlay[labVec]
+
                 # Generate the output paths
                 tempName = (outName % (subID, radius, hemi))
                 tempOut = os.path.join(tempDir, tempName)

@@ -12,6 +12,8 @@ The sections correspond to the three different processing steps that are
 currently implemented. It is advisable to set all parameters before running
 even a subset of the processing as there are some cross-dependencies
 '''
+import os
+
 
 #===============================================================================
 # General Configuration
@@ -22,14 +24,17 @@ subjectListFile = '/scr/kansas1/surchs/testSurface/subjects.txt'
 hemipsheres = ['lh', 'rh']
 # a python list containing the radii for the sliding window (like so: [3, 6])
 radii = [3, 6, 9, 12]
+# full path to the base directory
+baseDir = '/scr/kansas1/surchs/testSurface'
+
 # full path to a temporary directory (file conversion temp files are dumped)
-tempDir = '/scr/kansas1/surchs/testSurface/temp'
+tempDir = os.path.join(baseDir, 'temp')
 
 #===============================================================================
 # Condor Configuration
 #===============================================================================
 # full path to a directory where the condor submit files will be saved
-condorDir = '/scr/kansas1/surchs/testSurface/condor'
+condorDir = os.path.join(tempDir, 'condor')
 
 #===============================================================================
 # Gradient Configuration
@@ -39,7 +44,7 @@ condorDir = '/scr/kansas1/surchs/testSurface/condor'
 pathToGradientScript = '/scr/kansas1/surchs/testSurface/scripts/runGradientForNifti.sh'
 # full path to the output directory for the gradients (each subject will be
 # in a separate sub-directory)
-gradientOutPutDir = '/scr/kansas1/surchs/testSurface/gradienOut'
+gradientOutPutDir = os.path.join(baseDir, 'gradientOut')
 # name for the condor submit file for the gradient calculation
 gradientCondorName = 'run_gradients'
 
@@ -58,7 +63,7 @@ overlayTemp = 'sulc_%s_%s2fsaverage5_6'
 correlationInputDir = gradientOutPutDir
 # full path to the output directory where the surface processing will be saved
 # in subdirectories for each subject
-correlationOutDir = '/scr/kansas1/surchs/testSurface/corr'
+correlationOutDir = os.path.join(baseDir, 'corrOut')
 
 # name template for the surface file - the %s part get's replaced with the
 # appropriate hemisphere - best to be left untouched for now
@@ -80,9 +85,9 @@ correlationOutName = '%s_correlation_%d_%s'
 # GLM Configuration
 #===============================================================================
 # full path to the directory where the glm files are prepared (design matrix...)
-glmPrepDir = '/scr/kansas1/surchs/testSurface/glm_prep'
+glmPrepDir = os.path.join('glmPrep')
 # full path to the directory where the glm outputs will be saved
-glmOutDir = '/scr/kansas1/surchs/testSurface/glm_out'
+glmOutDir = os.path.join('glmOut')
 
 # A set of name templates for glm related files - %d gets replaced with the
 # radius, %s with the hemisphere
