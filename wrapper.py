@@ -71,7 +71,8 @@ def makeGradient():
         arguments = ('%s %s' % (subject, outPutDir))
         logFilePath = os.path.join(logDir, subject)
         # generate a temporary condor string and then append it
-        tempStr = sp.fileops.genCondorString(pathToScript, arguments, logFilePath)
+        tempStr = sp.fileops.genCondorString(pathToScript, arguments,
+                                             logFilePath)
         condorStr = ('%s%s' % (condorStr, tempStr))
 
     condorOut = os.path.join(condorDir, condorName)
@@ -123,10 +124,11 @@ def doSurfaceCorrelation():
         subject = line.strip()
         subjectList.append(subject)
 
-    # Load the label list
-    f = open(labelPath, 'rb')
-    labels = f.readlines()
-    f.close()
+    if doLabel:
+        # Load the label list
+        f = open(labelPath, 'rb')
+        labels = f.readlines()
+        f.close()
 
     labelList = []
     for line in labels:
