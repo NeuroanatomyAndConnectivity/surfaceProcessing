@@ -108,8 +108,8 @@ The gradient scripts used to generate the gradients depend on:
 * [AFNI](http://afni.nimh.nih.gov/afni/download)
 
 The python modules need a couple of packages that usually come with every  
-larger python distribution (like [EPD](https://www.enthought.com/products/epd/))  
-but might need to install
+larger python distribution (like [EPD](https://www.enthought.com/products/epd/))
+but might need to install:
 * [nipy](http://nipy.org/)
 * [pysurfer](http://pysurfer.github.io/)
 

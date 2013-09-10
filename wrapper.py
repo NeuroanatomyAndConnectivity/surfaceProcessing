@@ -23,6 +23,20 @@ import surfaceProcessing as sp
 from nibabel import freesurfer as nfs
 
 
+def findLabels():
+    surfaceTemp = cf.surfaceTemp
+    inputDir = cf.correlationInputDir
+    hemispheres = cf.hemipsheres
+    labelPath = cf.labelPath
+
+    # First check if the label file already exists
+    if os.path.isfile(labelPath):
+        print('I found an existing labelfile at %s - going to overwrite' % (labelPath))
+        os.remove(labelPath)
+
+
+
+
 def makeGradient():
     '''
     This method collects the necessary information to run the gradient script
@@ -111,7 +125,7 @@ def doSurfaceCorrelation():
     outName = cf.correlationOutName
     subjectListFile = cf.subjectListFile
     useAbsVals = cf.useAbsVals
-    labelPath = None
+    labelPath = cf.labelPath
     doLabel = cf.doLabel
 
     # Load subject list
@@ -267,6 +281,9 @@ def makeGlm():
     glmContrastTemp = cf.glmContrastName
     glmFsgdTemp = cf.glmDesigMatName
 
+    labelPath = cf.labelPath
+    doLabel = cf.doLabel
+
     searchDir = cf.correlationOutDir
     searchFile = cf.correlationOutName
     condorFile = cf.glmCondorName
@@ -308,6 +325,9 @@ def makeGlm():
             for subject in subjectList:
                 # first find the appropriate file#
                 fileName = (searchFile % (subject, radius, hemi))
+                if doLabel:
+                    # append the '_label' part to the file name
+                    fileName = ('%s_label' % (fileName))
                 fileName = ('%s.mgh' % (fileName))
                 subSearchDir = os.path.join(searchDir, subject)
                 # subSearchDir = searchDir

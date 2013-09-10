@@ -33,6 +33,10 @@ tempDir = os.path.join(baseDir, 'temp')
 # set this variable to True if you want to work on the level of individual
 # cortical regions as defined by freesurfer label files
 doLabel = True
+# This is the path to the textfile containing the absolute paths to the label
+# files. Change this manually or replace with custom path to change the labels
+# included in the analysis
+labelPath = os.path.join(baseDir, 'labels', 'labelFile.txt')
 
 #===============================================================================
 # Condor Configuration
