@@ -30,6 +30,10 @@ baseDir = '/scr/kansas1/surchs/testSurface'
 # full path to a temporary directory (file conversion temp files are dumped)
 tempDir = os.path.join(baseDir, 'temp')
 
+# set this variable to True if you want to work on the level of individual
+# cortical regions as defined by freesurfer label files
+doLabel = True
+
 #===============================================================================
 # Condor Configuration
 #===============================================================================

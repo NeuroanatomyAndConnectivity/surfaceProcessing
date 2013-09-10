@@ -109,9 +109,9 @@ def doSurfaceCorrelation():
     outDir = cf.correlationOutDir
     outName = cf.correlationOutName
     subjectListFile = cf.subjectListFile
-    useAbsVals = cf.useAsbVals
+    useAbsVals = cf.useAbsVals
     labelPath = None
-    doLabel = None
+    doLabel = cf.doLabel
 
     # Load subject list
     f = open(subjectListFile, 'rb')
