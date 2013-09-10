@@ -79,7 +79,7 @@ freesurfer segmentation.
 The only thing you have to do to run your analysis on these labels is to set the
 environment variable
 
-    doLabel to True
+    doLabel = True
 
 everything else will be taken care of.
 
