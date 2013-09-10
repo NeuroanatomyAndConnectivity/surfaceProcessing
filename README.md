@@ -29,7 +29,11 @@ file.
 
 ##Usage
 Make sure that all dependencies are available when executing the script
-and when starting the condor process. 
+and when starting the condor process. This may mean that you have to call the
+condor command from a network accessible directory and also ensure that the
+files that you are running on are accessible from the network. Otherwise, the
+processing nodes may not be able to access your files and as a consequence the
+condor process may crash.
 
 ###Condor usage
 Before starting the condor process make sure that AFNI, connectome workbench  
@@ -61,14 +65,28 @@ located here:
 
     /scr/melisse1/NKI_enhanced/results/
 
-
+###Processing
 This is a list of the score options currently implemented for the surface processing  
 'pearsonr': pearson correlation between gradient and overlay  
 'spearmanr': spearman correlation between gradient and overlay  
 'zpear': z-score of correlation p-value of pearson correlation  
-'zspear': z-score of correlation p-value of spearman correlation  
+'zspear': z-score of correlation p-value of spearman correlation
 
-## Dependencies
+###Label-wise processing
+As an additional usage scenario there is the option of computing the average
+functional-morphometric relationship for all cortical labels defined in the
+freesurfer segmentation.
+The only thing you have to do to run your analysis on these labels is to set the
+environment variable XXX to True - everything else will be taken care of.
+
+Specifically, a wrapper will be called to extract the annotation file of the
+specified template into individual label files to a default location. From there
+all cortical labels will be read in and processed. Technically, you can replace
+these labels with your own labels - however at the moment there is no safeguard
+in place to ensure that labels are non-overlapping. If they were, bad things are
+going to happen.
+
+##Dependencies
 The gradient scripts used to generate the gradients depend on:
 * [the connectome workbench of the human connectome project](http://www.humanconnectome.org/connectome/connectome-workbench.html)
 * [freesurfer](http://ftp.nmr.mgh.harvard.edu/fswiki/Download)
@@ -81,9 +99,9 @@ but might need to install
 * [pysurfer](http://pysurfer.github.io/)
 
 If you want to go for all packages individually then you should have access to:
-* numpy
-* matplotlib
-* sklearn
-* scipy
-* nibabel
-* networkx
+* [numpy](http://www.numpy.org/)
+* [matplotlib](http://matplotlib.org/)
+* [sklearn](http://scikit-learn.org/stable/)
+* [scipy](http://www.scipy.org/)
+* [nibabel](http://nipy.sourceforge.net/nibabel/)
+* [networkx](http://networkx.github.io/)

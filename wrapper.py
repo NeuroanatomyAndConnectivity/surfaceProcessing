@@ -110,6 +110,8 @@ def doSurfaceCorrelation():
     outName = cf.correlationOutName
     subjectListFile = cf.subjectListFile
     useAbsVals = cf.useAsbVals
+    labelPath = None
+    doLabel = None
 
     # Load subject list
     f = open(subjectListFile, 'rb')
@@ -120,6 +122,16 @@ def doSurfaceCorrelation():
     for line in subjectLines:
         subject = line.strip()
         subjectList.append(subject)
+
+    # Load the label list
+    f = open(labelPath, 'rb')
+    labels = f.readlines()
+    f.close()
+
+    labelList = []
+    for line in labels:
+        label = line.strip()
+    labelList.append(label)
 
     for hemi in hemispheres:
         if hemi == 'lh':
@@ -192,29 +204,47 @@ def doSurfaceCorrelation():
             for radius in radii:
                 # Generate the distance dictionary for the current radius
                 distanceDict = sp.procops.buildNeighbors(truncGraph, radius)
-                corrVec = sp.procops.slideRoiValues(numberVerteces, keepVerteces,
+                vertVec = sp.procops.slideRoiValues(numberVerteces, keepVerteces,
                                                     distanceDict, gradient,
                                                     morphVec2=overlay, score=score)
+                # Generate the output paths
+                tempName = (outName % (subID, radius, hemi))
+                saveName = (outName % (subID, radius, hemi))
 
                 if doLabel:
                     # Get the label vector and take the average of the
                     # correlation map
+                    #
+                    # make a storage vector for the label processing
+                    labelVec = np.zeros_like(vertVec)
                     for label in labelList:
                         # make label name
                         labelName = os.path.basename(label)
                         # read the label
                         labVec = nfs.read_label(label)
                         # use the indices to take a slice out of the overlay
-                        overlayVec = overlay[labVec]
+                        sliceVec = vertVec[labVec]
+                        # take the average of that slice
+                        avgSlice = np.mean(sliceVec)
+                        # and write it back into the appropriate verteces
+                        labelVec[labVec] = avgSlice
 
-                # Generate the output paths
-                tempName = (outName % (subID, radius, hemi))
+                    # Adjust the names for the save files
+                    tempName = ('%s_label' % tempName)
+                    saveName = ('%s_label' % outName)
+
+                    outVec = labelVec
+                else:
+                    # If we are not using label computation, just write the
+                    # vertex-vise vector
+                    outVec = vertVec
+
+                # Generate the paths for the output
                 tempOut = os.path.join(tempDir, tempName)
-                saveName = (outName % (subID, radius, hemi))
                 saveOut = os.path.join(subOutDir, saveName)
 
                 # Generate the output files
-                outStr = sp.fileops.writeVector(surface, corrVec, mode='ascii')
+                outStr = sp.fileops.writeVector(surface, outVec, mode='ascii')
                 savePath = sp.fileops.saveTxt(tempOut, outStr, 'asc',
                                               hemi=hemi)
                 sp.fileops.convertMorphAsciiMgh(savePath, surfacePath,
