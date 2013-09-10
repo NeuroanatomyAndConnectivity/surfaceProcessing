@@ -28,7 +28,7 @@ then
     mkdir -pv ${outDir}
 fi
 
-labelList=${subjectDir}'/labelList'_${hemi}'.txt'
+labelList=${outDir}'/labelList'_${hemi}'.txt'
 mri_annotation2label --subject ${templateName} --hemi ${hemi} --annotation aparc.a2009s --outdir ${outDir}
 ls ${outDir}/*${hemi}*.label > ${labelList}
 echo ${labelList}
