@@ -11,7 +11,7 @@ then
 elif [ -z "$2" ]
 then
     echo You did not supply enough arguments, please also supply the the output directory and the hemisphere
-
+l
 elif [ -z "$3" ]
 then
     echo You did not supply the hemisphere. Please specify the hemisphere as either lh or rh

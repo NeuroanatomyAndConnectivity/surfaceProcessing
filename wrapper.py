@@ -17,24 +17,52 @@ Things I would like to do with this code:
 import os
 import sys
 import shutil
+import subprocess
 import numpy as np
 import configure as cf
 import surfaceProcessing as sp
 from nibabel import freesurfer as nfs
 
 
+def loadSubjectList():
+    '''
+    central function to load the subject list
+    '''
+    subjectListFile = cf.subjectListFile
+
+    # Load subject list
+    f = open(subjectListFile, 'rb')
+    subjectLines = f.readlines()
+    f.close()
+
+    subjectList = []
+    for line in subjectLines:
+        subject = line.strip()
+        subjectList.append(subject)
+
+    return subjectList
+
+
+
 def findLabels():
-    surfaceTemp = cf.surfaceTemp
-    inputDir = cf.correlationInputDir
+    surfaceTemp = cf.templatePath
     hemispheres = cf.hemipsheres
     labelPath = cf.labelPath
+    labelDir = cf.labelDir
+    pathToLabelScript = cf.labelScript
 
     # First check if the label file already exists
     if os.path.isfile(labelPath):
         print('I found an existing labelfile at %s - going to overwrite' % (labelPath))
         os.remove(labelPath)
 
-
+    for hemi in hemispheres:
+        # Call the external process to extract the labels
+        command = [('./%s' % (pathToLabelScript)), labelDir, surfaceTemp, hemi]
+        print('running %s' % (str(command)))
+        process = subprocess.Popen(command)
+        output = process.communicate()[0]
+        print(output)
 
 
 def makeGradient():
@@ -58,7 +86,7 @@ def makeGradient():
     pathToScript = cf.pathToGradientScript
     condorDir = cf.condorDir
     condorName = cf.gradientCondorName
-    logDir = os.path.join(condorDir, 'log')
+    logDir = cf.logDir
 
     # Check if paths exist
     if not os.path.isdir(outPutDir):
@@ -68,22 +96,15 @@ def makeGradient():
     if not os.path.isdir(logDir):
         os.makedirs(logDir)
 
-    # Load subject list
-    f = open(subjectListFile, 'rb')
-    subjectLines = f.readlines()
-    f.close()
-
-    subjectList = []
-    for line in subjectLines:
-        subject = line.strip()
-        subjectList.append(subject)
+    subjectList = loadSubjectList()
 
     # Start generating the condor file
     condorStr = ''
     for subject in subjectList:
         # Put the arguments for the script in one string
         arguments = ('%s %s' % (subject, outPutDir))
-        logFilePath = os.path.join(logDir, subject)
+        logFileName = 'condorlog_%s' % (subject)
+        logFilePath = os.path.join(logDir, logFileName)
         # generate a temporary condor string and then append it
         tempStr = sp.fileops.genCondorString(pathToScript, arguments,
                                              logFilePath)
@@ -115,7 +136,7 @@ def doSurfaceCorrelation():
     gradientTemp = cf.gradientTemp
     overlayTemp = cf.overlayTemp
     maskTemp = cf.maskTemp
-    surfaceTemp = cf.surfaceTemp
+    surfaceTemp = cf.templatePath
     inputDir = cf.correlationInputDir
     radii = cf.radii
     hemispheres = cf.hemipsheres
@@ -128,15 +149,7 @@ def doSurfaceCorrelation():
     labelPath = cf.labelPath
     doLabel = cf.doLabel
 
-    # Load subject list
-    f = open(subjectListFile, 'rb')
-    subjectLines = f.readlines()
-    f.close()
-
-    subjectList = []
-    for line in subjectLines:
-        subject = line.strip()
-        subjectList.append(subject)
+    subjectList = loadSubjectList()
 
     if doLabel:
         # Load the label list
@@ -293,28 +306,10 @@ def makeGlm():
     clustThresh = cf.clustThresh
     posneg = cf.posneg
     radii = cf.radii
-    scriptDir = os.path.join(glmPrepDir, 'script')
-    logDir = os.path.join(glmPrepDir, 'log')
+    scriptDir = cf.condorScriptDir
+    logDir = cf.logDir
 
-    # See if the folders exist already, if not, create them
-    if not os.path.isdir(glmPrepDir):
-        os.makedirs(glmPrepDir)
-    if not os.path.isdir(glmOutDir):
-        os.makedirs(glmOutDir)
-    if not os.path.isdir(scriptDir):
-        os.makedirs(scriptDir)
-    if not os.path.isdir(logDir):
-        os.makedirs(logDir)
-
-    # Load subject list
-    f = open(subjectListFile, 'rb')
-    subjectLines = f.readlines()
-    f.close()
-
-    subjectList = []
-    for line in subjectLines:
-        subject = line.strip()
-        subjectList.append(subject)
+    subjectList = loadSubjectList()
 
     scriptList = []
 
