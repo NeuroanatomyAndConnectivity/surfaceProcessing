@@ -43,13 +43,12 @@ def loadSubjectList():
     return subjectList
 
 
-
 def findLabels():
     surfaceTemp = cf.templatePath
     hemispheres = cf.hemipsheres
     labelPath = cf.labelPath
     labelDir = cf.labelDir
-    pathToLabelScript = cf.labelScript
+    pathToLabelScript = cf.pathToLabelScript
 
     # First check if the label file already exists
     if os.path.isfile(labelPath):
@@ -58,7 +57,7 @@ def findLabels():
 
     for hemi in hemispheres:
         # Call the external process to extract the labels
-        command = [('./%s' % (pathToLabelScript)), labelDir, surfaceTemp, hemi]
+        command = [pathToLabelScript, labelDir, surfaceTemp, hemi]
         print('running %s' % (str(command)))
         process = subprocess.Popen(command)
         output = process.communicate()[0]
@@ -81,7 +80,6 @@ def makeGradient():
     I will make this more flexible once it is running
     '''
     # Stuff that should be supplied dynamically
-    subjectListFile = cf.subjectListFile
     outPutDir = cf.gradientOutPutDir
     pathToScript = cf.pathToGradientScript
     condorDir = cf.condorDir
@@ -144,7 +142,6 @@ def doSurfaceCorrelation():
     tempDir = cf.tempDir
     outDir = cf.correlationOutDir
     outName = cf.correlationOutName
-    subjectListFile = cf.subjectListFile
     useAbsVals = cf.useAbsVals
     labelPath = cf.labelPath
     doLabel = cf.doLabel
@@ -152,6 +149,8 @@ def doSurfaceCorrelation():
     subjectList = loadSubjectList()
 
     if doLabel:
+        # First, unpack the labels
+        findLabels()
         # Load the label list
         f = open(labelPath, 'rb')
         labels = f.readlines()
@@ -301,7 +300,6 @@ def makeGlm():
     searchFile = cf.correlationOutName
     condorFile = cf.glmCondorName
     condorDir = cf.condorDir
-    subjectListFile = cf.subjectListFile
     vertexThresh = cf.vertexThresh
     clustThresh = cf.clustThresh
     posneg = cf.posneg
